@@ -4,9 +4,20 @@ Código del curso de sprint udemy
 
 ## Ejecutar la aplicación
 
+### Con maven
+
 1. Ir al directorio de la aplicación
 2. ejecutar "mvn install"
 3. ejecutar "mvn spring-boot:run"
+
+### Con java
+1. Ir al directorio target
+2. copiar el archivo .jar
+3. ejecutar "java -jar archivo.jar"
+
+### Ejecutar un WAR (Web Application aRquive)
+
+TODO
 
 ## Messajes de commit semáticos (Semantic Commit Messages)
 
