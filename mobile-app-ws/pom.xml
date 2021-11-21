@@ -3,23 +3,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.sirantar.app.ws</groupId>
+	<artifactId>mobile-app-ws</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging><!-- Para que sea un war en lugar de un jar -->
+	
+	<name>mobile-app-ws</name>
+	<description>Demo project for Spring Boot</description>	
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.sirantar.app.ws</groupId>
-	<artifactId>mobile-app-ws</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	
-	<!-- Para que sea un war en lugar de un jar -->
-	<packaging>war</packaging>
-	
-	<name>mobile-app-ws</name>
-	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version> <!-- con java 11 no funciona -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -56,7 +57,6 @@
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
