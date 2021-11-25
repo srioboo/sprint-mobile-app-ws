@@ -3,22 +3,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>com.sirantar.app.ws</groupId>
 	<artifactId>mobile-app-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging><!-- Para que sea un war en lugar de un jar -->
-	
+
 	<name>mobile-app-ws</name>
-	<description>Demo project for Spring Boot</description>	
-	
+	<description>Demo project for Spring Boot</description>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<properties>
 		<java.version>1.8</java.version> <!-- con java 11 no funciona -->
 	</properties>
@@ -62,6 +62,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.2</version>
 		</dependency>
 
 		<dependency>
