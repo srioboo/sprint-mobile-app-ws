@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto createUser(UserDto user) {
 		
-		if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("record already exists");
+		if(userRepository.findByEmail(user.getEmail()) != null)
+			throw new RuntimeException("record already exists");
 		
 		for(int i=0;i<user.getAddresses().size();i++) {
 			AddressDto address = user.getAddresses().get(i);
@@ -97,7 +98,9 @@ public class UserServiceImpl implements UserService {
 		if(userEntity == null) 
 			throw new UserServiceException("User with ID: " + userId + " not found");
 
-		BeanUtils.copyProperties(userEntity, returnValue);
+		ModelMapper modelMapper = new ModelMapper();
+		returnValue = modelMapper.map(userEntity, UserDto.class);
+		//BeanUtils.copyProperties(userEntity, returnValue);
 		
 		return returnValue;
 	}
@@ -146,9 +149,12 @@ public class UserServiceImpl implements UserService {
 		Page<UserEntity> usersPage = userRepository.findAll(pageableRequest);
 		List<UserEntity> users = usersPage.getContent();
 		
+		ModelMapper modelMapper = new ModelMapper();
+		
 		for(UserEntity userEntity: users){
-			UserDto userDto = new UserDto();
-			BeanUtils.copyProperties(userEntity, userDto);
+			//UserDto userDto = new UserDto();
+			//BeanUtils.copyProperties(userEntity, userDto);
+			UserDto userDto = modelMapper.map(userEntity, UserDto.class);
 			returnValue.add(userDto);
 		}
 		

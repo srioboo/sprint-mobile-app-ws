@@ -36,10 +36,14 @@ public class UserController {
 	@GetMapping(path="/{id}", produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })  // /users/{id}
 	public UserRest getUser(@PathVariable String id) {
 		
-		UserRest returnValue = new UserRest();
-		
+		//UserRest returnValue = new UserRest();
 		UserDto userDto = userService.getUserByUserId(id);
-		BeanUtils.copyProperties(userDto, returnValue);
+		
+		ModelMapper modelMapper = new ModelMapper();
+		UserRest returnValue = modelMapper.map(userDto, UserRest.class);
+		
+		// FIXME: es este punto falla al tranferir las propiedades de userDto a returnValue
+		//BeanUtils.copyProperties(userDto, returnValue);
 		
 		return returnValue;
 	}
@@ -64,7 +68,7 @@ public class UserController {
 		
 		UserDto createdUser = userService.createUser(userDto);
 		//BeanUtils.copyProperties(createdUser, returnValue);
-		modelMapper.map(createdUser, UserRest.class);
+		returnValue = modelMapper.map(createdUser, UserRest.class);
 		
 		return returnValue;
 	}
