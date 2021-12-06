@@ -1,12 +1,14 @@
 package com.sirantar.app.ws.ui.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
@@ -150,7 +152,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/{userId}/addresses/{addressId}", produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })  // /users/{id}
-	public AddressesRest getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
+	public EntityModel<AddressesRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
 		
 		AddressDto addressesDto = addressService.getAddress(addressId);
 
@@ -169,10 +171,11 @@ public class UserController {
 				.slash(addressId)
 				.withSelfRel();
 		
-		returnValue.add(userLink);
-		returnValue.add(userAddressesLink);
-		returnValue.add(selfLink);
+		// esto ya no sería necesario
+		// returnValue.add(userLink);
+		// returnValue.add(userAddressesLink);
+		// returnValue.add(selfLink);
 		
-		return returnValue;
+		return EntityModel.of(returnValue, Arrays.asList(userLink, userAddressesLink, selfLink));
 	}
 }
