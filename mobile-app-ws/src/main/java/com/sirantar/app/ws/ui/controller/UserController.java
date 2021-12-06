@@ -41,8 +41,6 @@ public class UserController {
 		
 		ModelMapper modelMapper = new ModelMapper();
 		UserRest returnValue = modelMapper.map(userDto, UserRest.class);
-		
-		// FIXME: es este punto falla al tranferir las propiedades de userDto a returnValue
 		//BeanUtils.copyProperties(userDto, returnValue);
 		
 		return returnValue;
@@ -55,7 +53,7 @@ public class UserController {
 		
 		// usando http://modelmapper.org/getting-started/
 		
-		UserRest returnValue = new UserRest();
+		//UserRest returnValue = new UserRest();
 		
 		if(userDetails.getFirstName().isEmpty()) 
 			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
@@ -68,7 +66,7 @@ public class UserController {
 		
 		UserDto createdUser = userService.createUser(userDto);
 		//BeanUtils.copyProperties(createdUser, returnValue);
-		returnValue = modelMapper.map(createdUser, UserRest.class);
+		UserRest returnValue = modelMapper.map(createdUser, UserRest.class);
 		
 		return returnValue;
 	}
@@ -112,8 +110,11 @@ public class UserController {
 		List<UserDto> users = userService.getUsers(page, limit);
 		
 		for(UserDto userDto: users) {
-			UserRest userModel = new UserRest();
-			BeanUtils.copyProperties(userDto, userModel);
+			//UserRest userModel = new UserRest();
+			//BeanUtils.copyProperties(userDto, userModel);
+			ModelMapper modelMapper = new ModelMapper();
+			UserRest userModel = modelMapper.map(userDto, UserRest.class);
+			
 			returnValue.add(userModel);
 		}
 		
