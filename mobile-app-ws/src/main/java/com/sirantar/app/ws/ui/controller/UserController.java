@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -137,7 +138,7 @@ public class UserController {
 	
 	// http://localhost:8080/mobile-app-ws/users/{id}/addresses
 	@GetMapping(path="/{id}/addresses", produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })  // /users/{id}
-	public List<AddressesRest> getAddresses(@PathVariable String id) {
+	public CollectionModel<AddressesRest> getUserAddresses(@PathVariable String id) {
 		
 		List<AddressesRest> returnValue = new ArrayList<>();
 		
@@ -146,9 +147,21 @@ public class UserController {
 		if(addressesDto != null && !addressesDto.isEmpty()) {
 			java.lang.reflect.Type listType = new TypeToken<List<AddressesRest>>() {}.getType();
 			returnValue = new ModelMapper().map(addressesDto, listType);
+			
+			for (AddressesRest addressesRest: returnValue) {
+				Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+						.getUserAddress(id, addressesRest.getAddressId()))
+						.withSelfRel();
+				addressesRest.add(selfLink);
+			}
 		}
 		
-		return returnValue;
+		Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(id).withRel("user");
+		Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+				.getUserAddresses(id))
+				.withSelfRel();
+		
+		return CollectionModel.of(returnValue, userLink, selfLink);
 	}
 	
 	@GetMapping(path="/{userId}/addresses/{addressId}", produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })  // /users/{id}
@@ -161,7 +174,7 @@ public class UserController {
 		
 		// http://localhost:8080/users/<userId>/addresses
 		Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
-		Link userAddressesLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getAddresses(userId))
+		Link userAddressesLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddresses(userId))
 				//.slash(userId)
 				//.slash("addresses")
 				.withRel("addresses");
