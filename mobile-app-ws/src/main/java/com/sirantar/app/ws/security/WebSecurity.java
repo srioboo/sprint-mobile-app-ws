@@ -34,11 +34,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		.csrf().disable().authorizeRequests()
 		.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
 		.permitAll()
+		.antMatchers(SecurityConstants.H2_CONSOLE)
+		.permitAll()
 		.anyRequest().authenticated().and()
 		.addFilter(getAuthenticationFilter())
 		.addFilter(new AuthorizationFilter(authenticationManager()))
 		.sessionManagement()
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		
+		http.headers().frameOptions().disable(); // avoid that frame are disallow in browser, only for testing H2 with frontend
 	}
 	
 	@Override
