@@ -10,7 +10,10 @@ import com.sirantar.app.ws.io.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
-	
+
 	UserEntity findByEmail(String email);
+
 	UserEntity findByUserId(String userId); // findByUserId debe tener estas palabras find By y el campo user_id
+
+	UserEntity findUserByEmailVerificationToken(String token);
 }

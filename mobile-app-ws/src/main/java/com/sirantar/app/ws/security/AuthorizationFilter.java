@@ -21,7 +21,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 		super(authManager);
 	}
 
-	@Override
+	@Override 
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 
