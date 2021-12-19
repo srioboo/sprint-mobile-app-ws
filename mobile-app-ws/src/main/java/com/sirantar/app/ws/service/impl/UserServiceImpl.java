@@ -90,7 +90,11 @@ public class UserServiceImpl implements UserService {
 		if (userEntity == null)
 			throw new UsernameNotFoundException(email);
 
-		return new User(userEntity.getEmail(), userEntity.getEncrypedPassword(), new ArrayList<>());
+		return new User(userEntity.getEmail(), userEntity.getEncrypedPassword(),
+				userEntity.getEmailVerificationStatus(), true, true, true, new ArrayList<>());
+
+		// return new User(userEntity.getEmail(), userEntity.getEncrypedPassword(), new
+		// ArrayList<>());
 	}
 
 	@Override
@@ -110,7 +114,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public UserDto updateUser(String userId, UserDto user) {
