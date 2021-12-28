@@ -194,8 +194,8 @@ public class UserController {
 	}
 
 	/**
-	 * http://localhost:8080/mobile-app-ws/users/email-vierifcation?token=sdfsdf
-	 * 
+	 * http://localhost:8080/mobile-app-ws/users/email-verification?token=sdfsdf
+	 *
 	 * @param token
 	 * @return
 	 */
