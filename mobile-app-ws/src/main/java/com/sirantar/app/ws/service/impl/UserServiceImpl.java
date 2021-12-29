@@ -19,6 +19,7 @@ import com.sirantar.app.ws.exceptions.UserServiceException;
 import com.sirantar.app.ws.io.entity.UserEntity;
 import com.sirantar.app.ws.io.repositories.UserRepository;
 import com.sirantar.app.ws.service.UserService;
+import com.sirantar.app.ws.shared.AmazonSES;
 import com.sirantar.app.ws.shared.Utils;
 import com.sirantar.app.ws.shared.dto.AddressDto;
 import com.sirantar.app.ws.shared.dto.UserDto;
@@ -66,6 +67,9 @@ public class UserServiceImpl implements UserService {
 		// UserDto returnValue = new UserDto();
 		// BeanUtils.copyProperties(storedUserDetails, returnValue);
 		UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
+
+		// Send an email message to user to verify theeir email address
+		new AmazonSES().verifyEmail(returnValue);
 
 		return returnValue;
 	}
