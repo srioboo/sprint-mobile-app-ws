@@ -16,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sirantar.app.ws.exceptions.UserServiceException;
+import com.sirantar.app.ws.io.entity.PasswordResetTokenEntity;
 import com.sirantar.app.ws.io.entity.UserEntity;
+import com.sirantar.app.ws.io.repositories.PasswordResetTokenRespository;
 import com.sirantar.app.ws.io.repositories.UserRepository;
 import com.sirantar.app.ws.service.UserService;
 import com.sirantar.app.ws.shared.AmazonSES;
@@ -36,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	PasswordResetTokenRespository passwordResetTokenRespository;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -192,7 +197,30 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		return false;
+		return returnValue;
+	}
+
+	@Override
+	public boolean requestPasswordReset(String email) {
+
+		boolean returnValue = false;
+
+		UserEntity userEntity = userRepository.findByEmail(email);
+
+		if (userEntity == null) {
+			return returnValue;
+		}
+
+		String token = new Utils().generatePasswordResetToken(userEntity.getUserId());
+
+		PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+		passwordResetTokenEntity.setToken(token);
+		passwordResetTokenEntity.setUserDetails(userEntity);
+		passwordResetTokenRespository.save(passwordResetTokenEntity);
+
+		returnValue = new AmazonSES().sendPasswordResetRequest(userEntity.getFirstName(), userEntity.getEmail(), token);
+
+		return returnValue;
 	}
 
 }
