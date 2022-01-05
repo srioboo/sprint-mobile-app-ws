@@ -1,0 +1,41 @@
+root = true
+
+[*]
+# charset = utf-8
+# end_of_line = crlf
+indent_size = 2
+indent_style = space
+# insert_final_newline = false
+max_line_length = 120
+# tab_width = 4
+trim_trailing_whitespace = true
+
+[*.java]
+trim_trailing_whitespace = true
+
+[*.properties]
+trim_trailing_whitespace = true
+
+[{*.ant,*.fxml,*.jhm,*.jnlp,*.jrxml,*.jspx,*.pom,*.rng,*.tagx,*.tld,*.wsdl,*.xml,*.xsd,*.xsl,*.xslt,*.xul}]
+trim_trailing_whitespace = true
+
+[{*.bash,*.sh,*.zsh}]
+# indent_size = 2
+# tab_width = 2
+
+[{*.har,*.json}]
+# indent_size = 2
+
+[{*.htm,*.html,*.sht,*.shtm,*.shtml}]
+# indent_size = 2
+# max_line_length = 120
+
+[{*.jsp,*.jspf}]
+# indent_size = 2
+trim_trailing_whitespace = true
+
+[{*.markdown,*.md}]
+trim_trailing_whitespace = true
+
+[{*.yaml,*.yml}]
+# indent_size = 2
