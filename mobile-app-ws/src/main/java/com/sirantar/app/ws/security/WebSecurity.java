@@ -19,52 +19,63 @@ import com.sirantar.app.ws.service.UserService;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-	private final UserService userDetailsService;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final UserService           userDetailsService;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		this.userDetailsService = userDetailsService;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-	}
+  public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    this.userDetailsService    = userDetailsService;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+  }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests()
-				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-				.antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL).permitAll()
-				.antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL).permitAll()
-				.antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL).permitAll()
-				.antMatchers(SecurityConstants.H2_CONSOLE).permitAll().anyRequest().authenticated().and()
-				.addFilter(getAuthenticationFilter()).addFilter(new AuthorizationFilter(authenticationManager()))
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors().and()
+      .csrf().disable().authorizeRequests()
+      .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
+      .permitAll()
+      .antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL)
+      .permitAll()
+      .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL)
+      .permitAll()
+      .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL)
+      .permitAll()
+      .antMatchers(SecurityConstants.H2_CONSOLE)
+      .permitAll()
+      .antMatchers("/v2/api-docs", "/v3/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+      .permitAll()
+      .anyRequest().authenticated().and()
+      .addFilter(getAuthenticationFilter())
+      .addFilter(new AuthorizationFilter(authenticationManager()))
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		http.headers().frameOptions().disable(); // avoid that frame are disallow in browser, only for testing H2 with
-													// frontend
-	}
+    http.headers().frameOptions().disable(); // avoid that frame are disallow in browser, only for testing H2 with
+                                            // frontend
+  }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-	}
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+  }
 
-	public AuthenticationFilter getAuthenticationFilter() throws Exception {
-		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
-		filter.setFilterProcessesUrl("/users/login");
-		return filter;
-	}
+  public AuthenticationFilter getAuthenticationFilter() throws Exception {
+    final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+    filter.setFilterProcessesUrl("/users/login");
+    return filter;
+  }
 
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		final CorsConfiguration configuration = new CorsConfiguration();
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    final CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		configuration.setAllowCredentials(true);
-		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-type"));
+    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowCredentials(true);
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-type"));
 
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
 
-		return source;
-	}
+    return source;
+  }
 }
