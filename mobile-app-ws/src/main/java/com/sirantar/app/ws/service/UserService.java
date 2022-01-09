@@ -9,9 +9,20 @@ import com.sirantar.app.ws.shared.dto.UserDto;
 public interface UserService extends UserDetailsService {
 
 	UserDto createUser(UserDto user);
+
 	UserDto getUser(String email);
+
 	UserDto getUserByUserId(String id);
+
 	UserDto updateUser(String id, UserDto user);
+
 	void deleteUser(String id);
+
 	List<UserDto> getUsers(int page, int limit);
+
+	boolean verifyEmailToken(String token);
+
+	boolean requestPasswordReset(String email);
+
+	boolean resetPassword(String token, String password);
 }

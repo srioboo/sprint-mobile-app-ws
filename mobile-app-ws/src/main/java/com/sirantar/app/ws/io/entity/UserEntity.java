@@ -1,124 +1,146 @@
 package com.sirantar.app.ws.io.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@Entity(name="users")
+// @Entity(name="users")
+@Entity
+@Table(name = "users")
 public class UserEntity implements Serializable {
 
-	private static final long serialVersionUID = 6066893820822210606L;
+  private static final long serialVersionUID = 6066893820822210606L;
 
-	
-	@Id
-	@GeneratedValue
-	private long id;
+  @Id
+  @GeneratedValue
+  private long id;
 
-	@Column(nullable=false)
-	private String userId;
-	
-	@Column(nullable=false, length=50)
-	private String firstName;
-	
-	@Column(nullable=false, length=50)
-	private String lastName;
+  @Column(nullable = false)
+  private String userId;
 
-	//@Column(nullable=false, length=120, unique=true) // con indicacion de que es unica
-	@Column(nullable=false, length=120)
-	private String email;
-	
-	@Column(nullable=false)
-	private String encrypedPassword;
-	
-	private String emailVerificationToken;
-	
-	// @Column(nullable=false, columnDefinition = "boolean default false")
-	// private Boolean emailVerificationStatus;
-	
-	@Column(nullable=false)
-	private Boolean emailVerificationStatus = false;
+  @Column(nullable = false,
+    length = 50)
+  private String firstName;
 
-	@OneToMany(mappedBy="userDetails", cascade = CascadeType.ALL)
-	private List<AddressEntity> addresses;
-	
-	public long getId() {
-		return id;
-	}
+  @Column(nullable = false,
+    length = 50)
+  private String lastName;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  //@Column(nullable=false, length=120, unique=true) // con indicacion de que es unica
+  @Column(nullable = false,
+    length = 120)
+  private String email;
 
-	public String getUserId() {
-		return userId;
-	}
+  @Column(nullable = false)
+  private String encrypedPassword;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  private String emailVerificationToken;
 
-	public String getFirstName() {
-		return firstName;
-	}
+  // @Column(nullable=false, columnDefinition = "boolean default false")
+  // private Boolean emailVerificationStatus;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  @Column(nullable = false)
+  private Boolean emailVerificationStatus = false;
 
-	public String getLastName() {
-		return lastName;
-	}
+  @OneToMany(mappedBy = "userDetails",
+    cascade = CascadeType.ALL)
+  private List<AddressEntity> addresses;
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  @ManyToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER)
+  @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+  private Collection<RoleEntity> roles;
 
-	public String getEmail() {
-		return email;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public String getEncrypedPassword() {
-		return encrypedPassword;
-	}
+  public String getUserId() {
+    return userId;
+  }
 
-	public void setEncrypedPassword(String encrypedPassword) {
-		this.encrypedPassword = encrypedPassword;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public String getEmailVerificationToken() {
-		return emailVerificationToken;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public void setEmailVerificationToken(String emailVerificationToken) {
-		this.emailVerificationToken = emailVerificationToken;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public Boolean getEmailVerificationStatus() {
-		return emailVerificationStatus;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
-		this.emailVerificationStatus = emailVerificationStatus;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public List<AddressEntity> getAddresses() {
-		return addresses;
-	}
+  public String getEmail() {
+    return email;
+  }
 
-	public void setAddresses(List<AddressEntity> addresses) {
-		this.addresses = addresses;
-	}
-	
-	
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getEncrypedPassword() {
+    return encrypedPassword;
+  }
+
+  public void setEncrypedPassword(String encrypedPassword) {
+    this.encrypedPassword = encrypedPassword;
+  }
+
+  public String getEmailVerificationToken() {
+    return emailVerificationToken;
+  }
+
+  public void setEmailVerificationToken(String emailVerificationToken) {
+    this.emailVerificationToken = emailVerificationToken;
+  }
+
+  public Boolean getEmailVerificationStatus() {
+    return emailVerificationStatus;
+  }
+
+  public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
+    this.emailVerificationStatus = emailVerificationStatus;
+  }
+
+  public List<AddressEntity> getAddresses() {
+    return addresses;
+  }
+
+  public void setAddresses(List<AddressEntity> addresses) {
+    this.addresses = addresses;
+  }
+
+  public Collection<RoleEntity> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Collection<RoleEntity> roles) {
+    this.roles = roles;
+  }
+
 }
