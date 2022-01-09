@@ -1,13 +1,18 @@
 package com.sirantar.app.ws.io.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,16 +31,16 @@ public class UserEntity implements Serializable {
   private String userId;
 
   @Column(nullable = false,
-          length = 50)
+    length = 50)
   private String firstName;
 
   @Column(nullable = false,
-          length = 50)
+    length = 50)
   private String lastName;
 
   //@Column(nullable=false, length=120, unique=true) // con indicacion de que es unica
   @Column(nullable = false,
-          length = 120)
+    length = 120)
   private String email;
 
   @Column(nullable = false)
@@ -50,8 +55,13 @@ public class UserEntity implements Serializable {
   private Boolean emailVerificationStatus = false;
 
   @OneToMany(mappedBy = "userDetails",
-             cascade = CascadeType.ALL)
+    cascade = CascadeType.ALL)
   private List<AddressEntity> addresses;
+
+  @ManyToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER)
+  @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+  private Collection<RoleEntity> roles;
 
   public long getId() {
     return id;
@@ -123,6 +133,14 @@ public class UserEntity implements Serializable {
 
   public void setAddresses(List<AddressEntity> addresses) {
     this.addresses = addresses;
+  }
+
+  public Collection<RoleEntity> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Collection<RoleEntity> roles) {
+    this.roles = roles;
   }
 
 }
