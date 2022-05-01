@@ -28,9 +28,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
   public WebSecurity(UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder,
     UserRepository userRepository) {
-    this.userDetailsService    = userDetailsService;
+    this.userDetailsService = userDetailsService;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    this.userRespository       = userRepository;
+    this.userRespository = userRepository;
   }
 
   @Override
@@ -81,7 +81,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-type"));
+    configuration.setAllowedHeaders(Arrays
+      .asList("Authorization", "Cache-Control", "Content-type"));
 
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);

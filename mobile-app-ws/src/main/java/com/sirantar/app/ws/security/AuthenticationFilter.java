@@ -70,5 +70,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     res.addHeader("UserID", userDto.getUserId());
+
+    // added expose to be able to get bearer in the front-end
+    res.addHeader("Access-Control-Expose-Headers", "Authorization, X-Custom-Header");
   }
 }
